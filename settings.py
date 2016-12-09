@@ -2,7 +2,7 @@
 # Date: 09-Dec-2016
 # Settings module stores all the game settings
 
-class Settings():
+class Settings(object):
     """A class to store all settings for Alien Invasion."""
 
     def __init__(self):
