@@ -3,12 +3,14 @@
 # Ship's module which manages most of the behavior of the player's space ship.
 
 import pygame
+from pygame.sprite import Sprite
 
-class Ship(object):
+class Ship(Sprite):
     """Modelling behavior of the space ship."""
 
     def __init__(self, ai_settings, screen):
         """Initialize the ship and set its starting position."""
+        super(Ship, self).__init__()
         self.screen = screen
         self.ai_settings = ai_settings
     
