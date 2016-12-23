@@ -59,14 +59,13 @@ def check_play_button(ai_settings, screen, stats, sb, play_button, ship, aliens,
     """Start a new game when the player clicks Play."""
     button_clicked = play_button.rect.collidepoint(mouse_x, mouse_y)
     if button_clicked and not stats.game_active:
-        # Hide the mouse cursor.
-        pygame.mouse.set_visible(False)
-        
         start_game(ai_settings, screen, stats, sb, ship, aliens, bullets)
 
 
 def start_game(ai_settings, screen, stats, sb, ship, aliens, bullets):
     """Start new game."""
+    # Hide the mouse cursor.
+    pygame.mouse.set_visible(False)
     # Reset the game settings.
     ai_settings.initialize_dynamic_settings()
     # Reset the game statistics.
@@ -74,10 +73,7 @@ def start_game(ai_settings, screen, stats, sb, ship, aliens, bullets):
     stats.game_active = True
 
     # Reset the scoreboard images.
-    sb.prep_score()
-    sb.prep_high_score()
-    sb.prep_level()
-    sb.prep_ships()
+    sb.prep_images()
 
     # Empty the list of aliens and bullets.
     aliens.empty()
@@ -136,14 +132,19 @@ def check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, aliens,
         check_high_score(stats, sb)
     if len(aliens) == 0:
         # If the entire fleet is destroyed, start a new level.
-        bullets.empty()
-        ai_settings.increase_speed()
+        start_new_level(ai_settings, screen, stats, sb, ship, aliens, bullets)
 
-        # Increase level.
-        stats.level += 1
-        sb.prep_level()
 
-        create_fleet(ai_settings, screen, ship, aliens)
+def start_new_level(ai_settings, screen, stats, sb, ship, aliens, bullets):
+    """Start new game level."""
+    bullets.empty()
+    ai_settings.increase_speed()
+
+    # Increase level.
+    stats.level += 1
+    sb.prep_level()
+
+    create_fleet(ai_settings, screen, ship, aliens)
 
 
 def fire_bullet(ai_settings, screen, ship, bullets):
@@ -270,4 +271,3 @@ def write_to_file(highscore_file, stats):
     #filename = 'data\highscore.txt'
     with open(highscore_file, 'w') as f_obj:
         f_obj.write(str(round(stats.high_score, -1)))
-    
